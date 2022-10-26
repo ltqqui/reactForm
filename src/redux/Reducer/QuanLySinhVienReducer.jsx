@@ -1,24 +1,4 @@
 
-
-// const stateDefault = {
-//     arrStudent: [{ id: 1, name: 'thao', phone: '0941003224', email: 'lamthanhquillll@gmail.com' }]
-// }
-
-// export const QuanLySinhVienReducer = (state = stateDefault, action) => {
-//     switch (action.type) {
-//         case 'ADD_STUDENT': {
-//             const newArr=[...state.arrStudent,action.student]
-//             state.arrStudent=newArr;
-//             return{...state}
-//             // console.log(action)
-//         };
-//         default: {
-//             return { ...state}
-//         }
-//     }
-
-
-// }
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
@@ -40,7 +20,6 @@ const QuanLySinhVienReducer = createSlice({
     state.arrStudent=[...state.arrStudent,payload]
 
             console.log(state.arrStudent)
-      
     },
     deleteStudent:(state,{type,payload})=>{
       state.arrStudent=state.arrStudent.filter(student=>student.id!==payload);
@@ -59,6 +38,15 @@ const QuanLySinhVienReducer = createSlice({
         student.email=payload.email;
       }
     })  
+    },
+    getStore:(state,{type,payload})=>{
+      state.arrStudent=[...payload];
+    },
+    searchStudent:(state, {type, payload})=>{
+      // console.log(payload)
+      state.arrStudent=[...state.arrStudent]
+      const thaocute=state.arrStudent.filter(student=>student.id===payload);
+      console.log(thaocute)
     }
   }
 });

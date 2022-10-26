@@ -17,7 +17,8 @@ import { updateStudent } from '../../redux/Reducer/QuanLySinhVienReducer'
         phone:'',
         email:''
         },
-        isSubmit:true
+        isSubmit:true,
+        arrppp:[]
     }
 
     handleChange=(e)=>{
@@ -77,6 +78,18 @@ import { updateStudent } from '../../redux/Reducer/QuanLySinhVienReducer'
     handleSubmit=(e)=>{
         e.preventDefault();
     }
+    saveLocalStore=()=>{
+        let stringArr=JSON.stringify(this.props.arrStudent);
+        localStorage.setItem('arrStudent',stringArr);
+    }
+    getLocalStore=()=>{
+        if(localStorage.getItem('arrStudent')){
+            let arrStudent=JSON.parse(localStorage.getItem('arrStudent'))
+            return arrStudent;
+        }
+        return []
+    }
+
   render() {
     let {id, name, phone, email}=this.state.values
     return (
@@ -137,8 +150,14 @@ import { updateStudent } from '../../redux/Reducer/QuanLySinhVienReducer'
         </div>
 
         <div style={{marginLeft:'700px'}} >
-        <input type="text" className='mt-2'/>
-        <button className='btn btn-success'>Search</button>
+        <input type="text" className='mt-2' />
+        <button className='btn btn-success' onClick={()=>{
+            const action={
+                type:'QuanLySinhVienReducer/searchStudent',
+                payload:3
+            }
+            this.props.dispatch(action)
+        }} >Search</button>
         </div>
         </div>
         
@@ -152,10 +171,25 @@ import { updateStudent } from '../../redux/Reducer/QuanLySinhVienReducer'
             values:this.props.studentEdit
         })
     }
+    if(prevProps.arrStudent!==''){
+        this.saveLocalStore();
+    }
+  }
+  componentDidMount(){
+    if(localStorage.getItem('arrStudent')){
+        let newArrStudent=JSON.parse(localStorage.getItem('arrStudent'))
+        const action={
+            type:'QuanLySinhVienReducer/getStore',
+            payload:newArrStudent
+        }
+        this.props.dispatch(action)
+    }
+    return [];
   }
 }
 const mapStateToProps = (state) => ({
-    studentEdit:state.QuanLySinhVienReducer.studentEdit
+    studentEdit:state.QuanLySinhVienReducer.studentEdit,
+    arrStudent:state.QuanLySinhVienReducer.arrStudent
   })
 export default connect(mapStateToProps)(FormStudent)
 
